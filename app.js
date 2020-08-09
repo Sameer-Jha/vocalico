@@ -3,6 +3,10 @@ const content = document.querySelector('.content')
 const warning = document.querySelector('.incompatible-warn')
 
 
+window.addEventListener('load', ()=>{
+    registerSW();
+})
+
 try {
     const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition
     const recognition = new SpeechRecognition()
@@ -63,3 +67,37 @@ function reader(){
     }
     readOutLoud(text_input, pitch, speed)
 }
+
+
+async function registerSW() {
+    if('serviceWorker' in navigator){
+        try {
+            await navigator.serviceWorker.register('./sw.js')
+        } catch (e){
+            console.log('SW registration failed')
+        }
+    }
+}
+
+// let defferedPrompt
+// window.addEventListener('beforeinstallprompt', (e)=>{
+//     e.preventDefault()
+//     defferedPrompt = e
+
+//     // Add a button prompt
+//     btnAdd.style.display = 'block';
+// })
+
+// btnAdd.addEventListener('click', (e)=>{
+//     defferedPrompt.prompt()
+//     defferedPrompt.userChoice.then((choiceResult) => {
+//         if(choiceResult.outcome === 'accepted'){
+//             console.log('user accepted the A2HS prompt')
+//         }
+//         defferedPrompt = null
+//     })
+// })
+
+// window.addEventListener('appinstalled', (evt)=>{
+//     app.logEvent('a2hs','installed')
+// })
